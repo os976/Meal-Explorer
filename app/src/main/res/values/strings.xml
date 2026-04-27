@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">Meal Explorer</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">Find delicious meals easily</string>
+    <string name="search_hint">Search meals</string>
+    <string name="category_all">All</string>
+    <string name="category_label">Category: %1$s</string>
+
+    <!-- Details -->
+    <string name="details_title">Meal details</string>
+    <string name="details_area_label">Area</string>
+    <string name="details_category_label">Category</string>
+    <string name="details_instructions_label">Instructions</string>
+    <string name="details_ingredients_label">Ingredients</string>
+    <string name="details_back">Back</string>
+
+    <!-- States -->
+    <string name="state_loading">Loading…</string>
+    <string name="state_empty_title">No meals found</string>
+    <string name="state_empty_message">Try a different search or category.</string>
+    <string name="state_error_title">Something went wrong</string>
+    <string name="state_error_message">Check your connection and try again.</string>
+    <string name="state_retry">Retry</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_meal_image">Meal image</string>
+    <string name="cd_app_logo">App logo</string>
 </resources>

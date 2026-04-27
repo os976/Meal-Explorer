@@ -2,14 +2,23 @@ package com.example.mealexplorer.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.mealexplorer.R
 import com.example.mealexplorer.data.model.Meal
 import com.example.mealexplorer.databinding.ItemMealBinding
 
+/**
+ * RecyclerView adapter for the meal cards on the Home screen.
+ *
+ * Uses [ListAdapter] + [DiffUtil] so list updates (new search, category change)
+ * animate cleanly without flicker.
+ */
 class MealAdapter(
-    private val meals: List<Meal>
-) : RecyclerView.Adapter<MealAdapter.MealViewHolder>() {
+    private val onMealClick: (Meal) -> Unit
+) : ListAdapter<Meal, MealAdapter.MealViewHolder>(DIFF) {
 
     inner class MealViewHolder(
         private val binding: ItemMealBinding
@@ -17,8 +26,25 @@ class MealAdapter(
 
         fun bind(meal: Meal) {
             binding.tvMealName.text = meal.name
-            binding.tvMealCategory.text = "Category: ${meal.category}"
-            binding.ivMeal.load(meal.imageUrl)
+
+            // category may be null when the list comes from filter.php and we
+            // didn't backfill it - hide the row in that case.
+            val category = meal.category
+            if (category.isNullOrBlank()) {
+                binding.tvMealCategory.visibility = android.view.View.GONE
+            } else {
+                binding.tvMealCategory.visibility = android.view.View.VISIBLE
+                binding.tvMealCategory.text = binding.root.context
+                    .getString(R.string.category_label, category)
+            }
+
+            binding.ivMeal.load(meal.imageUrl) {
+                crossfade(true)
+                placeholder(R.drawable.bg_image_placeholder)
+                error(R.drawable.bg_image_placeholder)
+            }
+
+            binding.root.setOnClickListener { onMealClick(meal) }
         }
     }
 
@@ -32,8 +58,16 @@ class MealAdapter(
     }
 
     override fun onBindViewHolder(holder: MealViewHolder, position: Int) {
-        holder.bind(meals[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = meals.size
+    companion object {
+        private val DIFF = object : DiffUtil.ItemCallback<Meal>() {
+            override fun areItemsTheSame(oldItem: Meal, newItem: Meal): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Meal, newItem: Meal): Boolean =
+                oldItem == newItem
+        }
+    }
 }

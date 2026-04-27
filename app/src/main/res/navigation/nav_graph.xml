@@ -11,12 +11,35 @@
 
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.mealexplorer.ui.home.HomeFragment"
-        android:label="Home" />
+        android:label="Home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.mealexplorer.ui.details.MealDetailsFragment"
+        android:label="Details">
+
+        <argument
+            android:name="arg_meal_id"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="arg_meal_name"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 
 </navigation>
