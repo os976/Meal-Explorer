@@ -1,137 +1,154 @@
-# 🍽️ Meal Explorer
+# Meal Explorer
 
-A small Android training app built end-to-end against
-[TheMealDB](https://www.themealdb.com/api.php) — splash, home with search and
-category filtering, and a meal details screen powered by real API calls.
+Meal Explorer is a simple Android application built as a trainee project to practice Android fundamentals, XML UI, MVVM architecture, API integration, and clean project structure.
 
-This repository follows the **Meal Explorer Android XML Trainee Plan** and
-delivers all four weeks: project setup, full static flow, API integration,
-and search + details integration.
+The app allows users to explore meals from TheMealDB API, search by meal name, filter meals by category, and view full meal details.
 
 ---
 
-## 🛠️ Tech stack
+## Screenshots
 
-* Kotlin
-* XML layouts + Material 3
-* Single Activity + Fragments + Navigation Component
-* MVVM with `ViewModel` + `LiveData`
-* Coroutines
-* Retrofit + Gson
-* RecyclerView (`ListAdapter` + `DiffUtil`)
-* Coil for image loading
-* ViewBinding
+### 1. Splash Screen
+![Splash Screen](assets/1.jpeg)
 
----
+### 2. Home Screen
+![Home Screen](assets/2.jpeg)
 
-## 🧠 Architecture
+### 3. Search Result
+![Search Result](assets/3.jpeg)
 
-```
-ui/  ──── observes ───►  ViewModel  ──── calls ──►  Repository  ──► ApiService
-                            │                            │
-                            └──── LiveData<ApiResult> ◄──┘
-```
+### 4. Category Filter
+![Category Filter](assets/4.jpeg)
 
-* `ui/` — Fragments + Adapters. Stateless, just renders what the ViewModel says.
-* `data/model/` — Lean UI models (`Meal`, `MealDetails`, `Ingredient`, `Category`).
-* `data/remote/` — Retrofit interface, DTOs, base URL constants, sealed `ApiResult`.
-* `data/repository/` — Maps DTOs → UI models, wraps errors as `ApiResult.Error`.
-* `util/` — Small string helpers.
+### 5. Meal Details
+![Meal Details](assets/5.jpeg)
 
 ---
 
-## 📁 Folder structure
+## Features
 
-```
-app/src/main/java/com/example/mealexplorer
-├── MainActivity.kt
-├── data
-│   ├── model
-│   │   ├── Category.kt
-│   │   ├── Meal.kt
-│   │   └── MealDetails.kt
-│   ├── remote
-│   │   ├── ApiConstants.kt
-│   │   ├── ApiResult.kt
-│   │   ├── MealApiService.kt
-│   │   └── dto
-│   │       └── Dtos.kt
-│   └── repository
-│       └── MealRepository.kt
-├── ui
-│   ├── details
-│   │   ├── MealDetailsFragment.kt
-│   │   └── MealDetailsViewModel.kt
-│   ├── home
-│   │   ├── HomeFragment.kt
-│   │   ├── HomeViewModel.kt
-│   │   └── MealAdapter.kt
-│   └── splash
-│       └── SplashFragment.kt
-└── util
-    └── StringExtensions.kt
-```
+- Splash screen
+- Home screen with meal list
+- Search meals by name
+- Filter meals by category
+- Meal details screen
+- Loading state
+- Empty state
+- Error state with retry
+- API integration using TheMealDB
+- MVVM architecture
+- Repository pattern
+- XML-based UI
+- RecyclerView meal list
+- Navigation Component
 
 ---
 
-## 🌐 API endpoints used
+## Tech Stack
 
-Base URL: `https://www.themealdb.com/api/json/v1/1/`
-
-| Endpoint                     | Where it's called             |
-|------------------------------|-------------------------------|
-| `categories.php`             | Home — build category chips   |
-| `search.php?f=a`             | Home — default first load     |
-| `search.php?s=<query>`       | Home — search bar (debounced) |
-| `filter.php?c=<category>`    | Home — chip filter            |
-| `lookup.php?i=<mealId>`      | Details — full meal info      |
-
----
-
-## 🧩 Screens
-
-| Screen   | What it does                                                          |
-|----------|-----------------------------------------------------------------------|
-| Splash   | 1.5s branded entry, then auto-navigates to Home (and is popped).      |
-| Home     | Title, search bar, dynamic category chips, vertical meal cards.       |
-| Details  | Hero image, name, category, area, instructions, ingredients with measures. |
-| States   | Reusable loading / empty / error layouts included by both fragments.  |
+- Kotlin
+- XML Layouts
+- MVVM
+- Retrofit
+- Coroutines
+- Gson / Serialization
+- RecyclerView
+- ViewBinding
+- Navigation Component
+- Glide / Coil for image loading
+- TheMealDB API
 
 ---
 
-## 🔁 Data flow on Home
+## API Used
 
-1. `HomeViewModel.init` triggers `loadCategories()` and `loadMeals()` in parallel.
-2. Categories fill the chip group dynamically — `"All"` is always first.
-3. Default meals come from `search.php?f=a`.
-4. Tapping a chip calls `filter.php?c=<name>`. Tapping `"All"` reloads default.
-5. Typing in the search bar debounces 350ms then calls `search.php?s=<query>`.
-   Search overrides the active chip; clearing it falls back to the chip.
-6. Tapping a card navigates to Details with the meal id.
+This project uses TheMealDB public test API.
 
-## 🔁 Data flow on Details
+Base URL:
 
-1. Fragment reads `arg_meal_id` from `arguments`.
-2. `MealDetailsViewModel.load(id)` triggers `lookup.php?i=<id>`.
-3. Repository flattens the 20 `strIngredient` / `strMeasure` field pairs into a clean list.
-4. UI renders hero image, name, category/area badges, instructions, and ingredient rows.
-5. Retry on error simply re-issues `lookup.php` with the saved id.
+```text
+https://www.themealdb.com/api/json/v1/1/
 
----
+Main endpoints:
+search.php?s=
+lookup.php?i=
+categories.php
+filter.php?c=
+search.php?f=a
 
-## ✅ Plan delivery checklist
+App Flow
 
-* **Week 1** — Project structure, splash, static home, item card, mock data ✅
-* **Week 2** — Static end-to-end flow, details fragment, navigation Home → Details, loading/empty/error views ✅
-* **Week 3** — `ApiConstants`, `ApiResult`, `MealApiService`, `MealRepository`, real categories + default meals on Home ✅
-* **Week 4** — Search via `search.php?s=`, details via `lookup.php?i=`, real states wired throughout ✅
+Splash Screen
+      ↓
+Home Screen
+      ↓
+Search / Category Filter
+      ↓
+Meal Details Screen
 
----
+Project Structure
 
-## 🚀 Run it
+MealExplorer
+├── app
+│   ├── src/main/java/com/example/mealexplorer
+│   │   ├── app
+│   │   ├── data
+│   │   │   ├── model
+│   │   │   ├── remote
+│   │   │   └── repository
+│   │   ├── ui
+│   │   │   ├── home
+│   │   │   ├── details
+│   │   │   └── splash
+│   │   └── util
+│   └── src/main/res
+│       ├── layout
+│       ├── navigation
+│       ├── drawable
+│       └── values
 
-1. Open the project in Android Studio (Hedgehog or newer).
-2. Sync Gradle (Retrofit / Coroutines / Lifecycle pulls automatically).
-3. Run on a device or emulator with internet access.
+Architecture
 
-No API key configuration needed — the project uses TheMealDB developer test key `1` baked into the base URL.
+The project follows a simple MVVM structure:
+
+Fragment → ViewModel → Repository → API Service → TheMealDB API
+
+Fragment
+
+Responsible for displaying UI and observing data.
+
+ViewModel
+
+Handles screen logic and exposes UI state.
+
+Repository
+
+Handles data operations and communicates with the API layer.
+
+API Service
+
+Defines Retrofit API calls
+
+Final Week Delivery
+
+The final delivery includes:
+
+Search functionality connected to real API
+Meal details screen connected to real API
+Category filtering using API data
+Loading, empty, and error states connected to real responses
+Complete end-to-end app flow
+Final screenshots and demo video
+
+How to Run
+Clone the repository:
+git clone https://github.com/os976/Meal-Explorer.git
+Open the project in Android Studio.
+Sync Gradle.
+Run the app on an emulator or Android device.
+
+
+Author
+
+Omar Abdlegabbar
+
