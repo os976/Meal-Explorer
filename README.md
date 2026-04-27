@@ -64,19 +64,18 @@ The app allows users to explore meals from TheMealDB API, search by meal name, f
 
 This project uses TheMealDB public test API.
 
-Base URL:
+---
 
-```text
-https://www.themealdb.com/api/json/v1/1/
+## Main endpoints:
 
-Main endpoints:
+
 search.php?s=
 lookup.php?i=
 categories.php
 filter.php?c=
 search.php?f=a
-
-App Flow
+---
+## App Flow
 
 Splash Screen
       ↓
@@ -85,8 +84,8 @@ Home Screen
 Search / Category Filter
       ↓
 Meal Details Screen
-
-Project Structure
+---
+## Project Structure
 
 MealExplorer
 ├── app
@@ -106,8 +105,8 @@ MealExplorer
 │       ├── navigation
 │       ├── drawable
 │       └── values
-
-Architecture
+---
+## Architecture
 
 The project follows a simple MVVM structure:
 
@@ -129,26 +128,6 @@ API Service
 
 Defines Retrofit API calls
 
-Final Week Delivery
+---
 
-The final delivery includes:
-
-Search functionality connected to real API
-Meal details screen connected to real API
-Category filtering using API data
-Loading, empty, and error states connected to real responses
-Complete end-to-end app flow
-Final screenshots and demo video
-
-How to Run
-Clone the repository:
-git clone https://github.com/os976/Meal-Explorer.git
-Open the project in Android Studio.
-Sync Gradle.
-Run the app on an emulator or Android device.
-
-
-Author
-
-Omar Abdlegabbar
 
