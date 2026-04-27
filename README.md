@@ -60,15 +60,12 @@ The app allows users to explore meals from TheMealDB API, search by meal name, f
 
 ---
 
-## API Used
-
-This project uses TheMealDB public test API.
 
 ---
 
 ## Main endpoints:
 
-
+---
 search.php?s=
 lookup.php?i=
 categories.php
@@ -76,7 +73,7 @@ filter.php?c=
 search.php?f=a
 ---
 ## App Flow
-
+---
 Splash Screen
       ↓
 Home Screen
@@ -86,7 +83,7 @@ Search / Category Filter
 Meal Details Screen
 ---
 ## Project Structure
-
+---
 MealExplorer
 ├── app
 │   ├── src/main/java/com/example/mealexplorer
@@ -107,7 +104,7 @@ MealExplorer
 │       └── values
 ---
 ## Architecture
-
+---
 The project follows a simple MVVM structure:
 
 Fragment → ViewModel → Repository → API Service → TheMealDB API
