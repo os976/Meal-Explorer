@@ -12,22 +12,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * Drives the Home screen.
- *
- * Two LiveData streams are exposed:
- *  - [categoriesState]: state of the chip list (loaded once on screen open).
- *  - [mealsState]: state of the meal grid below the chips.
- *
- * The "current selection" is owned here so configuration changes (rotation)
- * keep the same chip / search applied:
- *  - [selectedCategoryId] = "all"        -> default meals
- *  - [selectedCategoryId] = "<name>"     -> filter.php?c=<name>
- *  - [searchQuery]   non-empty           -> search.php?s=<query>  (overrides chip)
- *
- * A small debounce is applied to search so we don't hit the API on every
- * keystroke.
- */
 class HomeViewModel(
     private val repository: MealRepository = MealRepository()
 ) : ViewModel() {
@@ -38,7 +22,6 @@ class HomeViewModel(
     private val _mealsState = MutableLiveData<ApiResult<List<Meal>>>()
     val mealsState: LiveData<ApiResult<List<Meal>>> = _mealsState
 
-    /** "all" means show default meals. Otherwise it's a category name. */
     var selectedCategoryId: String = ALL_CATEGORY
         private set
 
@@ -50,10 +33,6 @@ class HomeViewModel(
         loadMeals()
     }
 
-    // ------------------------------------------------------------------
-    // Public actions
-    // ------------------------------------------------------------------
-
     fun loadCategories() {
         _categoriesState.value = ApiResult.Loading
         viewModelScope.launch {
@@ -61,10 +40,6 @@ class HomeViewModel(
         }
     }
 
-    /**
-     * Reloads meals based on current state (search query takes priority over
-     * the selected category). Called on initial load and from "Retry".
-     */
     fun loadMeals() {
         val query = searchQuery
         val category = selectedCategoryId
@@ -83,16 +58,12 @@ class HomeViewModel(
     fun onCategorySelected(categoryId: String) {
         if (selectedCategoryId == categoryId) return
         selectedCategoryId = categoryId
-        // Selecting a category clears any active search so the user sees
-        // results from the new chip immediately.
+
         searchQuery = ""
         loadMeals()
     }
 
-    /**
-     * Called from the search EditText. Debounces by [SEARCH_DEBOUNCE_MS] so
-     * fast typing doesn't trigger a request per character.
-     */
+
     fun onSearchQueryChanged(query: String) {
         val trimmed = query.trim()
         if (trimmed == searchQuery) return

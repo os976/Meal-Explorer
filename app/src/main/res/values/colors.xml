@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand -->
     <color name="brand_primary">#FF7043</color>
     <color name="brand_primary_dark">#E64A19</color>
     <color name="brand_accent">#FFB300</color>
 
-    <!-- Backgrounds -->
     <color name="cream_bg">#FFF8F0</color>
     <color name="card_bg">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <!-- Text -->
     <color name="text_primary">#222222</color>
     <color name="text_secondary">#666666</color>
     <color name="text_tertiary">#9E9E9E</color>
     <color name="text_on_primary">#FFFFFF</color>
 
-    <!-- Dividers / borders -->
     <color name="divider">#EEEEEE</color>
     <color name="chip_background">#FFEDE2</color>
     <color name="chip_stroke">#FFCCBC</color>
 
-    <!-- States -->
     <color name="state_error">#D32F2F</color>
     <color name="state_empty">#9E9E9E</color>
 </resources>

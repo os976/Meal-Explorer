@@ -10,15 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-/**
- * Retrofit interface mirroring the four endpoints listed in the project plan.
- *
- *  - search.php?s=Arrabiata     -> [searchMealsByName]
- *  - search.php?f=a             -> [searchMealsByFirstLetter]
- *  - lookup.php?i=52772         -> [lookupMealById]
- *  - categories.php             -> [getCategories]
- *  - filter.php?c=Seafood       -> [filterByCategory]
- */
+
 interface MealApiService {
 
     @GET("search.php")
@@ -37,11 +29,7 @@ interface MealApiService {
     suspend fun filterByCategory(@Query("c") category: String): MealListResponse
 
     companion object {
-        /**
-         * Lazily built singleton instance. We keep this here to avoid pulling in
-         * a DI library for a small training project - one repository, one API,
-         * lifetime equal to the process is fine.
-         */
+
         val instance: MealApiService by lazy { build() }
 
         private fun build(): MealApiService {

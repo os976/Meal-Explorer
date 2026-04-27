@@ -35,23 +35,19 @@ class MealDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Toolbar back button - simple system-style back navigation.
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
-        // Optional: show the meal name in the toolbar immediately even before
-        // the API call returns, using the name we passed from Home.
+
         arguments?.getString(ARG_MEAL_NAME)?.let { name ->
             if (name.isNotBlank()) binding.toolbar.title = name
         }
 
-        // Retry wires both back to the same flow.
         binding.errorView.btnRetry.setOnClickListener { viewModel.retry() }
 
         observe()
 
-        // Trigger the first load only once, not on every config change.
         if (savedInstanceState == null) {
             val mealId = arguments?.getString(ARG_MEAL_ID).orEmpty()
             if (mealId.isBlank()) {
@@ -73,9 +69,6 @@ class MealDetailsFragment : Fragment() {
         }
     }
 
-    // ------------------------------------------------------------------
-    // State rendering
-    // ------------------------------------------------------------------
 
     private fun showLoading() {
         binding.contentScroll.visibility = View.GONE

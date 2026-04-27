@@ -10,12 +10,7 @@ import com.example.mealexplorer.R
 import com.example.mealexplorer.data.model.Meal
 import com.example.mealexplorer.databinding.ItemMealBinding
 
-/**
- * RecyclerView adapter for the meal cards on the Home screen.
- *
- * Uses [ListAdapter] + [DiffUtil] so list updates (new search, category change)
- * animate cleanly without flicker.
- */
+
 class MealAdapter(
     private val onMealClick: (Meal) -> Unit
 ) : ListAdapter<Meal, MealAdapter.MealViewHolder>(DIFF) {
@@ -27,8 +22,6 @@ class MealAdapter(
         fun bind(meal: Meal) {
             binding.tvMealName.text = meal.name
 
-            // category may be null when the list comes from filter.php and we
-            // didn't backfill it - hide the row in that case.
             val category = meal.category
             if (category.isNullOrBlank()) {
                 binding.tvMealCategory.visibility = android.view.View.GONE

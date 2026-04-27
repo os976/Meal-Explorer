@@ -11,12 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.mealexplorer.R
 import com.example.mealexplorer.databinding.FragmentSplashBinding
 
-/**
- * Brief branded entry screen. Shows for ~1.5 seconds and then jumps to Home.
- *
- * The handler is cancelled in [onDestroyView] so navigation does not fire on a
- * detached fragment if the user backs out fast.
- */
+
 class SplashFragment : Fragment() {
 
     private var _binding: FragmentSplashBinding? = null

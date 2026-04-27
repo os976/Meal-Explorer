@@ -26,7 +26,6 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var mealAdapter: MealAdapter
 
-    /** Set during chip rebuild to ignore the synthetic "checked" callbacks. */
     private var suppressChipCallback = false
 
     override fun onCreateView(
@@ -45,10 +44,6 @@ class HomeFragment : Fragment() {
         setupRetry()
         observeViewModel()
     }
-
-    // ------------------------------------------------------------------
-    // Setup
-    // ------------------------------------------------------------------
 
     private fun setupRecycler() {
         mealAdapter = MealAdapter(onMealClick = ::openDetails)
@@ -73,21 +68,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // ------------------------------------------------------------------
-    // Observers
-    // ------------------------------------------------------------------
 
     private fun observeViewModel() {
         viewModel.categoriesState.observe(viewLifecycleOwner) { state ->
-            // Categories only drive the chip group - they don't take over the
-            // whole screen. If categories fail, we still show the meals area.
             when (state) {
                 is ApiResult.Success -> renderChips(state.data)
                 ApiResult.Empty -> renderChips(emptyList())
                 is ApiResult.Error,
                 ApiResult.Loading -> {
-                    // Keep at least the "All" chip visible even before/after
-                    // a failure so the user can still browse default meals.
+
                     if (binding.chipGroupCategories.childCount == 0) {
                         renderChips(emptyList())
                     }
@@ -105,17 +94,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-    // ------------------------------------------------------------------
-    // Chip rendering
-    // ------------------------------------------------------------------
-
     private fun renderChips(categories: List<Category>) {
         val group: ChipGroup = binding.chipGroupCategories
         suppressChipCallback = true
         group.setOnCheckedStateChangeListener(null)
         group.removeAllViews()
 
-        // "All" chip is always the first option.
         addChip(
             group = group,
             id = HomeViewModel.ALL_CATEGORY,
@@ -123,7 +107,6 @@ class HomeFragment : Fragment() {
             checked = viewModel.selectedCategoryId == HomeViewModel.ALL_CATEGORY
         )
 
-        // Then one chip per category.
         categories.forEach { category ->
             addChip(
                 group = group,
@@ -133,8 +116,6 @@ class HomeFragment : Fragment() {
             )
         }
 
-        // Re-attach the listener AFTER chips are added so initial checked
-        // state changes don't fire callbacks.
         group.setOnCheckedStateChangeListener { chipGroup, checkedIds ->
             if (suppressChipCallback) return@setOnCheckedStateChangeListener
             val checkedId = checkedIds.firstOrNull() ?: return@setOnCheckedStateChangeListener
@@ -154,9 +135,6 @@ class HomeFragment : Fragment() {
         group.addView(chip)
     }
 
-    // ------------------------------------------------------------------
-    // State rendering helpers
-    // ------------------------------------------------------------------
 
     private fun showLoading() {
         binding.rvMeals.visibility = View.GONE
@@ -189,9 +167,6 @@ class HomeFragment : Fragment() {
         binding.errorView.tvErrorMessage.text = message
     }
 
-    // ------------------------------------------------------------------
-    // Navigation
-    // ------------------------------------------------------------------
 
     private fun openDetails(meal: Meal) {
         val args = Bundle().apply {

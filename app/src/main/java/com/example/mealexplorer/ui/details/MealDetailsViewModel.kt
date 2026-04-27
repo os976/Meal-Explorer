@@ -9,13 +9,7 @@ import com.example.mealexplorer.data.remote.ApiResult
 import com.example.mealexplorer.data.repository.MealRepository
 import kotlinx.coroutines.launch
 
-/**
- * Loads a single meal by id via lookup.php.
- *
- * The fragment passes the meal id once via [load]. The ViewModel keeps the id
- * so a "Retry" tap can re-issue the same request without the fragment having
- * to remember it.
- */
+
 class MealDetailsViewModel(
     private val repository: MealRepository = MealRepository()
 ) : ViewModel() {
